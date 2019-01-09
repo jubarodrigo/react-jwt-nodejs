@@ -13,6 +13,7 @@ class LoginForm extends Component {
             email: undefined,
             password: undefined
         }
+
     }
 
 
@@ -35,8 +36,26 @@ class LoginForm extends Component {
                 password: this.state.password
             }
         };
-        
+
+        fetch('http://localhost:3001/auth/login', {
+            method: "POST",
+            body: JSON.stringify(dataToSend),
+            header: {
+                "Content-Type": "application/json"
+            },
+        })
+        .then(response => response.json())
+        .then(responseJson =>{
+            if(responseJson.success){
+                localStorage.setItem('TEST_TOKEN', responseJson.token);
+            }            
+        })
+
     }
+
+
+
+
 
     handleEmailChange(e){
         this.setState({
