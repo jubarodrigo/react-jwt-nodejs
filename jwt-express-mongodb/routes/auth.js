@@ -10,7 +10,7 @@ router.post('/login', (req, res, next) => {
 
     if (email === undefined || password === undefined) {
         res.status(401).json({
-            sucess: false,
+            success: false,
             code: "ERROR_API_01",
             message: "email e/or password invalid."
         })
@@ -20,7 +20,7 @@ router.post('/login', (req, res, next) => {
         };
         let generatadeToken = jwt.sign(tokenData, config.JWT_KEY, { expiresIn: '1m' });
         res.json({
-            sucess: true,
+            success: true,
             token: generatadeToken
         })
     }
