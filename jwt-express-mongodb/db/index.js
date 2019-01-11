@@ -14,7 +14,7 @@ MongoClient.connect(config.MONGO_URL, (err, database) => {
 });
 
 module.exports = {
-    register: (data,handler) => {
-        
+    register: (data, handler) => {
+
     }
 }
