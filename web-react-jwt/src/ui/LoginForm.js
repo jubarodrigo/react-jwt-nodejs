@@ -28,7 +28,7 @@ class LoginForm extends Component {
     /*
     Login Form area
     */
-    handleSubmit(e){
+    handleSubmit(e) {
         e.preventDefault();
         let dataToSend = {
             userData: {
@@ -37,33 +37,30 @@ class LoginForm extends Component {
             }
         };
 
-        fetch('http://localhost:3001/auth/login', {
+        let url = 'http://localhost:3001/auth/login';
+
+        fetch(url, {
             method: "POST",
             body: JSON.stringify(dataToSend),
-            header: {
+            headers: {
                 "Content-Type": "application/json"
             },
-        })
-        .then(response => response.json())
-        .then(responseJson =>{
-            if(responseJson.success){
-                localStorage.setItem('TEST_TOKEN', responseJson.token);
-            }            
-        })
+        }).then(response => response.json())
+            .then(responseJson => {
+                if (responseJson.success) {
+                    localStorage.setItem('TEST_TOKEN', responseJson.token);
+                }
+            })
 
     }
 
-
-
-
-
-    handleEmailChange(e){
+    handleEmailChange(e) {
         this.setState({
             email: e.target.value
         });
     }
 
-    handlePasswordChange(e){
+    handlePasswordChange(e) {
         this.setState({
             password: e.target.value
         });
