@@ -4,7 +4,7 @@ var db = require('../db');
 
 /* GET users listing. */
 router.post('/register', (req, res, next) => {
-  const{name, email, password} = req.body.userData;
+  const { name, email, password } = req.body.userData;
 
   const dataToInsert = {
     name,
@@ -12,24 +12,24 @@ router.post('/register', (req, res, next) => {
     password
   }
 
-  const handler = (err) => {
-    if(!err){
+  const handler = (err, result) => {
+    if (!err) {
       res.json({
         success: true,
-        message: 'User registered',
+        message: 'User registered.',
         data: result
       });
-    }else{
+    } else {
       res.json({
         success: false,
-        message: 'User not registered',
+        message: 'User not registered.',
         error: err
-      })
+      });
     }
 
-    db.register(dataToInsert, handler);
-
   }
+
+  db.register(dataToInsert, handler);
 
 });
 

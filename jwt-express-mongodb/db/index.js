@@ -3,18 +3,19 @@ var MongoClient = require('mongodb').MongoClient;
 
 var db;
 var collection;
-MongoClient.connect(config.MONGO_URL, (err, database) => {
-    if (!err) {
-        console.log('Connection estabelished do MongoDB');
-        db = database;
+MongoClient.connect(config.MONGO_URL, (err, client) => {
+    if(!err){
+        console.log('Connection established to MongoDB.');
+        db = client.db('rectproject');
         collection = db.collection('users');
     } else {
-        console.log('Not possible to estabelished the connection to MongoDB');
+        console.log('Not possible to established the connection to MongoDB.')
     }
 });
-
 module.exports = {
-    register: (data,handler) => {
-        
+    register: (data, handler) => {
+        collection.insertOne(data, (err, result) => {
+            handler(err, result);
+        })
     }
 }
