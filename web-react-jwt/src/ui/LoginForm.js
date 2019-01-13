@@ -8,10 +8,16 @@ class LoginForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this);
 
         this.state = {
+            username: undefined,
             email: undefined,
-            password: undefined
+            password: undefined,
+            signUp: {
+                success: undefined,
+                message: undefined
+            }
         }
 
     }
@@ -23,7 +29,49 @@ class LoginForm extends Component {
     Register Form area
     */
 
+    handleSignUpSubmit(e) {
+        e.preventDefault();
+        let dataToSend = {
+            userData: {
+                name: this.refs.username.value,
+                email: this.refs.email.value,
+                password: this.refs.password.value
+            }
+        };
+        console.log(dataToSend);
+        let url = 'http://localhost:3001/users/register';
 
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify(dataToSend),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(response => response.json())
+            .then(responseJson => {
+                if (responseJson.success) {
+                    this.setState({
+                        ...this.state,
+                        signUp: {
+                            success: true,
+                            message: responseJson.message
+                        }
+                    });
+                } else {
+                    this.setState({
+                        ...this.state,
+                        signUp: {
+                            success: false,
+                            message: responseJson.message
+                        }
+                    });
+                }
+            })
+
+        this.refs.username.value = '';
+        this.refs.email.value = '';
+        this.refs.password.value = '';
+    }
 
     /*
     Login Form area
@@ -51,7 +99,6 @@ class LoginForm extends Component {
                     localStorage.setItem('TEST_TOKEN', responseJson.token);
                 }
             })
-
     }
 
     handleEmailChange(e) {
@@ -81,6 +128,19 @@ class LoginForm extends Component {
                                 </button>
                             </div>
                             <div className="modal-body">
+
+                                {
+                                    this.state.signUp.success !== undefined ? (
+                                        this.state.signUp.success ?
+                                            <div className="alert alert-success" role="alert">
+                                                {this.state.signUp.message}
+                                            </div>
+                                            :
+                                            <div className="alert alert-danger" role="alert">
+                                                {this.state.signUp.message}
+                                            </div>
+                                    ) : ''
+                                }
 
                                 <form onSubmit={this.handleSignUpSubmit}>
                                     <div className="form-group">
