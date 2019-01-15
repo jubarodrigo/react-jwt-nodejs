@@ -5,6 +5,9 @@ const config = require('../config/index');
 //JWT
 var jwt = require('jsonwebtoken');
 
+var bcrypt = require('bcrypt');
+var db = require('../db');
+
 router.post('/login', (req, res, next) => {
     const { email, password } = req.body.userData;
 
@@ -13,21 +16,33 @@ router.post('/login', (req, res, next) => {
             success: false,
             code: "ERROR_API_01",
             message: "email e/or password invalid."
-        })
+        });
     } else {
-        let tokenData = {
-            id: 101
-        };
-        let generatadeToken = jwt.sign(tokenData, config.JWT_KEY, { expiresIn: '1m' });
-        res.json({
-            success: true,
-            token: generatadeToken
-        })
+
+        //find user in MongoDB
+        const handler = (err, result) => {
+            if (!err && bcrypt.compareSync(password, result.password)) {
+                let tokenData = {
+                    name: result.name,
+                    email: result.email
+                };
+                let generatadeToken = jwt.sign(tokenData, config.JWT_KEY, { expiresIn: '1m' });
+                res.json({
+                    success: true,
+                    token: generatadeToken
+                });
+            } else {
+                res.status(401).json({
+                    success: false,
+                    code: 'Error_02',
+                    message: err
+                })
+            }
+        }
+
+        db.findUser({ email }, handler);
     }
 
-    res.json({
-        sendedEmail: email
-    })
-})
+});
 
 module.exports = router;

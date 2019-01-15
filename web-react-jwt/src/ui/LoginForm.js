@@ -33,7 +33,7 @@ class LoginForm extends Component {
         e.preventDefault();
         let dataToSend = {
             userData: {
-                name: this.refs.username.value,
+                username: this.refs.username.value,
                 email: this.refs.email.value,
                 password: this.refs.password.value
             }
@@ -66,7 +66,7 @@ class LoginForm extends Component {
                         }
                     });
                 }
-            })
+            }).catch(err => console.log('Error ',err))
 
         this.refs.username.value = '';
         this.refs.email.value = '';
@@ -98,7 +98,7 @@ class LoginForm extends Component {
                 if (responseJson.success) {
                     localStorage.setItem('TEST_TOKEN', responseJson.token);
                 }
-            })
+            });
     }
 
     handleEmailChange(e) {
