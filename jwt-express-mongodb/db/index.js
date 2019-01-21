@@ -20,7 +20,12 @@ module.exports = {
         })
     },
     findUser: (data, handler) => {
-        collection.findOne(data, (err,result) => {
+        collection.findOne(data, (err, result) => {
+            handler(err, result);
+        })
+    },
+    findAll: (handler) => {
+        collection.find((err, result) => {
             handler(err, result);
         })
     }
