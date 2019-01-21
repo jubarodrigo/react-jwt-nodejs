@@ -33,7 +33,7 @@ class LoginForm extends Component {
     verifytoken() {
         let url = 'http://localhost:3001/auth/verifytoken';
         let token = localStorage.getItem('TEST_TOKEN');
-        if(!token){
+        if (!token) {
             return
         }
 
@@ -47,7 +47,7 @@ class LoginForm extends Component {
         }).then(response => response.json())
             .then(responseJson => {
                 this.setState({
-                    logged : responseJson.success
+                    logged: responseJson.success
                 })
             }).catch(err => console.log('Error ', err))
     }
