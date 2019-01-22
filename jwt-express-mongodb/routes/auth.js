@@ -48,13 +48,13 @@ router.post('/login', (req, res, next) => {
 router.get('/verifytoken', (req, res, next) => {
     //[0] = Bearer , [1] = Token
     let token = req.headers['authorization'].split(' ')[1];
-    jwt.verify(token,config.JWT_KEY,(err,decode)=>{
-        if(!err){
+    jwt.verify(token, config.JWT_KEY, (err, decode) => {
+        if (!err) {
             res.json({
                 success: true,
                 message: 'Token is valid'
             });
-        }else{
+        } else {
             res.status(401).json({
                 success: false,
                 message: 'Token is not valid',
